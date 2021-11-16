@@ -153,7 +153,6 @@ export const __experimentalGetCoreBlocks = () => [
 	missing,
 	more,
 	navigation,
-	navigationArea,
 	navigationLink,
 	navigationSubmenu,
 	nextpage,
