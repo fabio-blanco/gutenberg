@@ -34,6 +34,7 @@ const placeholderChip = (
 );
 
 function PostFeaturedImageDisplay( {
+	clientId,
 	attributes,
 	setAttributes,
 	context: { postId, postType, queryId },
@@ -102,11 +103,12 @@ function PostFeaturedImageDisplay( {
 
 	return (
 		<>
+			<DimensionControls
+				clientId={ clientId }
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+			/>
 			<InspectorControls>
-				<DimensionControls
-					attributes={ attributes }
-					setAttributes={ setAttributes }
-				/>
 				<PanelBody title={ __( 'Link settings' ) }>
 					<ToggleControl
 						label={ sprintf(
