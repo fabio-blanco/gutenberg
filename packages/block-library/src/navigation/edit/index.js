@@ -93,7 +93,6 @@ function Navigation( {
 	setOverlayBackgroundColor,
 	overlayTextColor,
 	setOverlayTextColor,
-	context: { navigationArea },
 
 	// These props are used by the navigation editor to override specific
 	// navigation block settings.
@@ -109,27 +108,13 @@ function Navigation( {
 		layout: { justifyContent, orientation = 'horizontal' } = {},
 	} = attributes;
 
-	const [ areaMenu, setAreaMenu ] = useEntityProp(
-		'root',
-		'navigationArea',
-		'navigation',
-		navigationArea
-	);
-
-	const navigationAreaMenu = areaMenu === 0 ? undefined : areaMenu;
-
-	const navigationMenuId = navigationArea
-		? navigationAreaMenu
-		: attributes.navigationMenuId;
+	const navigationMenuId = attributes.navigationMenuId;
 
 	const setNavigationMenuId = useCallback(
 		( postId ) => {
 			setAttributes( { navigationMenuId: postId } );
-			if ( navigationArea ) {
-				setAreaMenu( postId );
-			}
 		},
-		[ navigationArea ]
+		[]
 	);
 
 	const [ hasAlreadyRendered, RecursionProvider ] = useNoRecursiveRenders(
@@ -160,10 +145,8 @@ function Navigation( {
 		setHasSavedUnsavedInnerBlocks,
 	] = useState( false );
 
-	const isWithinUnassignedArea = navigationArea && ! navigationMenuId;
-
 	const [ isPlaceholderShown, setIsPlaceholderShown ] = useState(
-		! hasExistingNavItems || isWithinUnassignedArea
+		! hasExistingNavItems
 	);
 
 	const [ isResponsiveMenuOpen, setResponsiveMenuVisibility ] = useState(
@@ -264,7 +247,7 @@ function Navigation( {
 	// Consider this 'unsaved'. Offer an uncontrolled version of inner blocks,
 	// that automatically saves the menu.
 	const hasUnsavedBlocks =
-		hasExistingNavItems && ! isEntityAvailable && ! isWithinUnassignedArea;
+		hasExistingNavItems && ! isEntityAvailable;
 	if ( hasUnsavedBlocks ) {
 		return (
 			<UnsavedInnerBlocks
@@ -333,9 +316,6 @@ function Navigation( {
 											onClose();
 										} }
 										onCreateNew={ () => {
-											if ( navigationArea ) {
-												setAreaMenu( 0 );
-											}
 											setAttributes( {
 												navigationMenuId: undefined,
 											} );
@@ -459,9 +439,6 @@ function Navigation( {
 						<NavigationMenuDeleteControl
 							onDelete={ () => {
 								replaceInnerBlocks( clientId, [] );
-								if ( navigationArea ) {
-									setAreaMenu( 0 );
-								}
 								setAttributes( {
 									navigationMenuId: undefined,
 								} );
