@@ -189,9 +189,7 @@ function gutenberg_get_navigation_areas() {
 function gutenberg_get_navigation_areas_paths_to_preload() {
 	$areas        = gutenberg_get_navigation_areas_menus();
 	$active_areas = array_intersect_key( $areas, gutenberg_get_navigation_areas() );
-	$paths        = array(
-		'/wp/v2/block-navigation-areas?context=edit',
-	);
+	$paths        = array();
 	foreach ( $active_areas as $post_id ) {
 		if ( 0 !== $post_id ) {
 			$paths[] = "/wp/v2/navigation/$post_id?context=edit";
